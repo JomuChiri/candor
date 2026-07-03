@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+candor/__init__.py
+candor/__main__.py
+candor/cli.py
+candor/config.py
+candor/logger.py
+candor.egg-info/PKG-INFO
+candor.egg-info/SOURCES.txt
+candor.egg-info/dependency_links.txt
+candor.egg-info/entry_points.txt
+candor.egg-info/requires.txt
+candor.egg-info/top_level.txt

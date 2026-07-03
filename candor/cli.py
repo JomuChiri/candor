@@ -7,11 +7,13 @@ from candor.parser.planner import build_plan
 from candor.modules import registry
 from candor.core.history import record_job, list_jobs
 from candor.core.logger import log_execution
+from candor.modules.registry import MODULES
 
 console = Console()
 
 @click.command()
 def main():
+    console.print(f"[yellow]Loaded modules:[/] {list(MODULES.keys())}")
     console.print("[bold cyan]Candor SOC Assistant v0.3[/]")
     console.print("Type 'exit' to quit, or 'jobs' to list history.\n")
 

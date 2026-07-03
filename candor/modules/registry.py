@@ -1,3 +1,4 @@
+import traceback
 import importlib
 import pkgutil
 import candor.modules
@@ -18,8 +19,8 @@ def discover_modules():
                 if isinstance(obj, type) and issubclass(obj, BaseModule) and obj is not BaseModule:
                     instance = obj()
                     MODULES[instance.name] = instance
-        except Exception as e:
-            print(f"Failed to load {name}: {e}")
+        except Exception :
+            print(f"\nFailed to load {name}")
 
 discover_modules()
 

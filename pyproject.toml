@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "candor"
+version = "0.1.0"
+description = "AI SOC Assistant"
+requires-python = ">=3.10"
+
+dependencies = [
+    "click>=8.1"
+]
+
+[project.scripts]
+candor = "candor.cli:main"
+
+[tool.setuptools]
+packages = ["candor"]
+

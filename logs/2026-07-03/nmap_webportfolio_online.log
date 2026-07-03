@@ -1,0 +1,13 @@
+Job #1
+Tool: nmap
+Action: service_scan
+Target: webportfolio.online
+Exit Code: 0
+Duration: 5.09s
+Output:
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-03 13:16 -0500
+Nmap done: 0 IP addresses (0 hosts up) scanned in 5.02 seconds
+
+Errors:
+Failed to resolve "webportfolio.online".
+WARNING: No targets were specified, so 0 hosts scanned.
