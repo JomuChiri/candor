@@ -3,11 +3,11 @@ Tool: nmap
 Action: service_scan
 Target: 192.168.1.1
 Exit Code: 0
-Duration: 16.43s
+Duration: 10.90s
 Output:
-Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-03 13:33 -0500
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-03 15:17 -0500
 Nmap scan report for soc-gateway.candorlabs.lan (192.168.1.1)
-Host is up (0.0047s latency).
+Host is up (0.0018s latency).
 Not shown: 998 filtered tcp ports (no-response)
 PORT   STATE SERVICE VERSION
 53/tcp open  domain  Unbound
@@ -15,4 +15,4 @@ PORT   STATE SERVICE VERSION
 MAC Address: 08:00:27:39:5A:FD (Oracle VirtualBox virtual NIC)
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 16.33 seconds
+Nmap done: 1 IP address (1 host up) scanned in 10.85 seconds

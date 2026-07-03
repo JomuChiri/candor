@@ -8,3 +8,4 @@ class ExecutionResult:
     stderr: str
     returncode: int
     elapsed: float
+    status: str = "success"

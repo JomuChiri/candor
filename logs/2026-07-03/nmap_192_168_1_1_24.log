@@ -1,0 +1,10 @@
+Job #1
+Tool: nmap
+Action: service_scan
+Target: 192.168.1.1/24
+Exit Code: -1
+Duration: 60.08s
+Output:
+
+Errors:
+Command '['nmap', '-sV', '192.168.1.1/24']' timed out after 60 seconds

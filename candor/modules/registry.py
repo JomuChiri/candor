@@ -1,15 +1,17 @@
-import traceback
+# candor/modules/registry.py
 import importlib
 import pkgutil
 import candor.modules
 from candor.modules.base import BaseModule
+import os
 
+DEBUG = os.getenv("CANDOR_DEBUG", "0") == "1"
 MODULES = {}
 
 def discover_modules():
     package = candor.modules
     for _, name, ispkg in pkgutil.iter_modules(package.__path__):
-        # Skip non-tool packages
+        # Skip non‑tool packages
         if name in ("base", "registry"):
             continue
         try:
@@ -19,9 +21,13 @@ def discover_modules():
                 if isinstance(obj, type) and issubclass(obj, BaseModule) and obj is not BaseModule:
                     instance = obj()
                     MODULES[instance.name] = instance
-        except Exception :
-            print(f"\nFailed to load {name}")
+                    if DEBUG:
+                        print(f"Loaded module: {instance.name}")
+        except Exception as e:
+            if DEBUG:
+                print(f"Failed to load {name}: {e}")
 
+# Run discovery at import time
 discover_modules()
 
 def get(name: str):

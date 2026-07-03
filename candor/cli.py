@@ -55,17 +55,20 @@ def main():
             job = record_job(intent, result)
             log_execution(job)
 
-            console.print(f"\n[bold magenta]Job #{job.id}[/]")
-            console.print(f"Tool    : {job.intent.tool}")
-            console.print(f"Action  : {job.intent.action}")
-            console.print(f"Target  : {job.intent.target}")
-            console.print(f"Duration: {job.result.elapsed:.2f}s")
-            console.print(f"Exit Code: {job.result.returncode}")
+            console.print("\n[bold magenta]Plan[/]")
+            console.print("────")
+            console.print(f"Tool    : {intent.tool}")
+            console.print(f"Action  : {intent.action}")
+            console.print(f"Target  : {intent.target}")
+            console.print(f"Command : {' '.join(plan.command)}")
 
-            if result.success:
+            if result.status == "success":
                 console.print("[bold green]✓ Success[/]")
+            elif result.status == "warning":
+                console.print("[bold yellow]⚠ Completed with warnings[/]")
             else:
                 console.print("[bold red]✗ Failed[/]")
+
 
             if result.stdout:
                 console.print("[bold blue]Output:[/]")
