@@ -1,19 +1,25 @@
-import subprocess
-import signal
+import subprocess, time
+from candor.core.result import ExecutionResult
 
-def run_command(command: str, timeout: int = 60):
+def run_command(command_list: list[str], timeout: int = 60) -> ExecutionResult:
+    start = time.time()
     try:
         result = subprocess.run(
-            command,
-            shell=True,
+            command_list,
             capture_output=True,
             text=True,
-            timeout=timeout
+            timeout=timeout,
+            shell=False  # safer
         )
-        return result.stdout if result.stdout else result.stderr
-    except subprocess.TimeoutExpired:
-        return f"Command timed out after {timeout} seconds"
+        elapsed = time.time() - start
+        return ExecutionResult(
+            success=(result.returncode == 0),
+            stdout=result.stdout,
+            stderr=result.stderr,
+            returncode=result.returncode,
+            elapsed=elapsed
+        )
+    except subprocess.TimeoutExpired as e:
+        return ExecutionResult(False, "", str(e), -1, time.time() - start)
     except KeyboardInterrupt:
-        return "Execution interrupted by user"
-    except Exception as e:
-        return str(e)
+        return ExecutionResult(False, "", "Interrupted by user", -1, time.time() - start)

@@ -1,20 +1,19 @@
-class Intent:
-    def __init__(self, tool, target):
-        self.tool = tool
-        self.target = target
+# candor/parser/intent.py
+from candor.core.intent import Intent
 
-
-def parse_intent(text):
-    text = text.lower().strip()
-    words = text.split()
-
-    if len(words) < 2:
+def parse_intent(query: str) -> Intent | None:
+    words = query.strip().split()
+    if not words:
         return None
 
-    if words[0] == "nmap":
-        return Intent("nmap", words[1])
+    # Simple mappings for now
+    if words[0] == "whois" and len(words) > 1:
+        return Intent(tool="whois", target=words[1])
 
-    if words[0] == "whois":
-        return Intent("whois", words[1])
+    if words[0] == "scan" and len(words) > 1:
+        return Intent(tool="nmap", action="service_scan", target=words[1])
+
+    if words[0] == "osdetect" and len(words) > 1:
+        return Intent(tool="nmap", action="os_detection", target=words[1])
 
     return None

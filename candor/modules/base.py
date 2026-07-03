@@ -1,8 +1,15 @@
-class BaseModule:
-    name = ""
+from abc import ABC, abstractmethod
+from candor.core.intent import Intent
+from candor.core.plan import Plan
+from candor.core.result import ExecutionResult
 
-    def build(self, intent):
-        raise NotImplementedError
+class BaseModule(ABC):
+    name: str = ""
 
-    def execute(self, plan):
-        raise NotImplementedError
+    @abstractmethod
+    def build(self, intent: Intent) -> Plan:
+        pass
+
+    @abstractmethod
+    def execute(self, plan: Plan) -> ExecutionResult:
+        pass
