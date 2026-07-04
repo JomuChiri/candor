@@ -1,11 +1,19 @@
-# candor/core/result.py
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
 
 @dataclass
 class ExecutionResult:
-    success: bool
+    returncode: int
     stdout: str
     stderr: str
-    returncode: int
     elapsed: float
-    status: str = "success"
+    status: str = field(init=False)
+
+    def __post_init__(self):
+        if self.returncode == 0:
+            if self.stderr.strip():
+                self.status = "warning"
+            else:
+                self.status = "success"
+        else:
+            self.status = "failed"
