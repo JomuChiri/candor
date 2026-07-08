@@ -2,11 +2,29 @@
 import importlib
 import pkgutil
 import candor.modules
-from candor.modules.base import BaseModule
 import os
 
+from candor.modules.base import BaseModule
+from candor.modules.nmap import NmapModule
+from candor.modules.whois import WhoisModule
+# add other modules...
+
 DEBUG = os.getenv("CANDOR_DEBUG", "0") == "1"
-MODULES = {}
+MODULES = {
+    "nmap": NmapModule,
+    "whois": WhoisModule,
+    # ...
+}
+
+def get(name):
+    return MODULES.get(name)
+
+def list_by_category():
+    categories = {}
+    for module in MODULES.values():
+        meta = module.metadata()
+        categories.setdefault(meta["category"], []).append(meta)
+    return categories
 
 def discover_modules():
     package = candor.modules

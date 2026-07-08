@@ -1,0 +1,17 @@
+Job #18
+Tool: nmap
+Action: port_scan
+Target: webportfolio.online
+Exit Code: 0
+Duration: 649.37s
+Output:
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-07 10:58 -0500
+Nmap scan report for webportfolio.online (216.198.79.65)
+Host is up (0.091s latency).
+Other addresses for webportfolio.online (not scanned): 64.29.17.1
+Not shown: 65533 filtered tcp ports (no-response)
+PORT    STATE SERVICE
+80/tcp  open  http
+443/tcp open  https
+
+Nmap done: 1 IP address (1 host up) scanned in 649.32 seconds

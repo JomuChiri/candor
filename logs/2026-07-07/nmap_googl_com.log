@@ -1,0 +1,17 @@
+Job #7
+Tool: nmap
+Action: None
+Target: googl.com
+Exit Code: 0
+Duration: 12.25s
+Output:
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-07 02:19 -0500
+Nmap scan report for googl.com (216.58.223.68)
+Host is up (0.022s latency).
+rDNS record for 216.58.223.68: mba01s07-in-f4.1e100.net
+Not shown: 998 filtered tcp ports (no-response)
+PORT    STATE SERVICE
+80/tcp  open  http
+443/tcp open  https
+
+Nmap done: 1 IP address (1 host up) scanned in 12.21 seconds

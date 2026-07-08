@@ -1,0 +1,10 @@
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-07-08 15:20 -0500
+Nmap scan report for soc-gateway.candorlabs.lan (192.168.1.1)
+Host is up (0.0052s latency).
+Not shown: 65533 filtered tcp ports (no-response)
+PORT   STATE SERVICE
+53/tcp open  domain
+80/tcp open  http
+MAC Address: 08:00:27:39:5A:FD (Oracle VirtualBox virtual NIC)
+
+Nmap done: 1 IP address (1 host up) scanned in 115.38 seconds

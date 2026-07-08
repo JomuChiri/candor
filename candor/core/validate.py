@@ -10,8 +10,15 @@ def is_ip(target):
         return False
         
 def validate_target(target: str) -> bool:
-    # Hostname/domain
-    hostname_pattern = re.compile(r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z]{2,})+$")
+    # Accept IPv4/IPv6
+    if is_ip(target):
+        return True
+
+    # Hostname/domain (RFC-compliant)
+    hostname_pattern = re.compile(
+        r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z]{2,})+$"
+    )
     if hostname_pattern.match(target):
         return True
+
     return False

@@ -1,0 +1,19 @@
+{
+  "target": "google.com",
+  "resolved_ip": null,
+  "commands_run": [
+    "whois-lookup",
+    "nmap-port_scan"
+  ],
+  "evidence": {
+    "whois-lookup": {
+      "file": "candor/investigations/google.com/whois-lookup.txt",
+      "summary": "..."
+    },
+    "nmap-port_scan": {
+      "file": "candor/investigations/192.168.1.1/nmap-port_scan.txt",
+      "summary": "..."
+    }
+  },
+  "start_time": "2026-07-08 15:09:35"
+}

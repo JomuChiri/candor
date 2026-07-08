@@ -4,6 +4,7 @@ from candor.core.intent import Intent
 from candor.core.plan import Plan
 from candor.core.result import ExecutionResult
 from candor.shell.execute import run_command
+from candor.config import load_config
 
 class NmapModule(BaseModule):
     name = "nmap"
@@ -32,14 +33,16 @@ class NmapModule(BaseModule):
 
         args = [self.name]
         if intent.action in self.actions:
-            # Split flags like "-p- -A" into separate args
             args.extend(self.actions[intent.action].split())
         args.append(intent.target)
 
         return Plan(command=args)
 
     def execute(self, plan: Plan) -> ExecutionResult:
-        return run_command(plan.command)
+        config = load_config()
+        default_args = config.get("nmap", {}).get("default_args", [])
+        command = ["nmap"] + default_args + plan.command[1:]
+        return run_command(command)
 
     def self_test(self) -> dict:
         from candor.doctor import check_tool

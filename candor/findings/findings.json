@@ -1,0 +1,19 @@
+{
+  "Critical": [],
+  "High": [],
+  "Medium": [],
+  "Informational": [
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-service",
+      "target": "google.com",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-port_scan",
+      "target": "192.168.1.1",
+      "mitre": "Unmapped"
+    }
+  ]
+}

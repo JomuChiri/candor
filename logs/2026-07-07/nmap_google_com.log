@@ -1,0 +1,10 @@
+Job #17
+Tool: nmap
+Action: port_scan
+Target: google.com
+Exit Code: -1
+Duration: 17615.20s
+Output:
+
+Errors:
+Execution interrupted by user.

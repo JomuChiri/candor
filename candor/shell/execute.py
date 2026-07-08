@@ -12,7 +12,6 @@ def run_command(command_list: list[str], timeout: int = 60) -> ExecutionResult:
             command_list,
             capture_output=True,
             text=True,
-            timeout=timeout,
             shell=False,
         )
 
