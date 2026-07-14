@@ -19,7 +19,12 @@ class WhoisModule(BaseModule):
         args = [self.name]
         args.append(intent.target)
 
-        return Plan(command=args)
+        return Plan(
+            tool="whois",
+            action="lookup",
+            target=intent.target,
+            command=args
+	)
 
     def execute(self, plan: Plan) -> ExecutionResult:
         return run_command(plan.command)

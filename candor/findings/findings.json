@@ -1,7 +1,50 @@
 {
   "Critical": [],
   "High": [],
-  "Medium": [],
+  "Medium": [
+    {
+      "description": "No significant services detected",
+      "source": "nmap-port_scan",
+      "target": "192.168.1.54",
+      "mitre": "Unmapped"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-port_scan",
+      "target": "192.168.1.54",
+      "mitre": "Unmapped"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-service",
+      "target": "192.168.1.54",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-service",
+      "target": "192.168.1.54",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-port_scan",
+      "target": "192.168.1.54",
+      "mitre": "Unmapped"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-service",
+      "target": "192.168.1.54",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-service",
+      "target": "192.168.1.54",
+      "mitre": "Discovery"
+    }
+  ],
   "Informational": [
     {
       "description": "No significant services detected",
@@ -14,6 +57,42 @@
       "source": "nmap-port_scan",
       "target": "192.168.1.1",
       "mitre": "Unmapped"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-port_scan",
+      "target": "tesla.com",
+      "mitre": "Unmapped"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-fast",
+      "target": "tesla.com",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-fast",
+      "target": "tesla.com",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-fast",
+      "target": "tesla.com",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-fast",
+      "target": "tesla.com",
+      "mitre": "Discovery"
+    },
+    {
+      "description": "No significant services detected",
+      "source": "nmap-scan-fast",
+      "target": "tesla.com",
+      "mitre": "Discovery"
     }
   ]
 }

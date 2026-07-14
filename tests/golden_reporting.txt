@@ -1,0 +1,32 @@
+Summary
+────
+Target      : tesla.com
+Host        : 2.18.51.207
+Duration    : 8.72 s
+Open Services
+─────────────
+80/tcp   HTTP
+443/tcp  HTTPS
+
+Findings
+────
+• Host is reachable
+• HTTP service detected
+• HTTPS service detected
+• Reverse DNS indicates Akamai CDN
+• 98 TCP ports filtered
+
+Assessment
+────
+Exposure appears consistent with a public-facing website.
+No unexpected network services were detected.
+
+Overall Risk : INFORMATIONAL
+Confidence   : 96%
+
+Recommended Next Steps
+────
+1. scan-service tesla.com
+2. whois tesla.com
+3. dig tesla.com
+4. nikto tesla.com (if authorized)

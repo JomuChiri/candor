@@ -27,16 +27,29 @@ class NmapModule(BaseModule):
         "port_scan": "-p-",          # full port range
     }
 
-    def build(self, intent: Intent) -> Plan:
-        if not intent.target:
-            raise ValueError("Target is required")
+    def build(self, intent):
+        """
+        Build execution plan for Nmap based on intent.
+        """
+        if intent.action == "scan-fast":
+            args = ["nmap", "-F", intent.target]
+        elif intent.action == "scan-service":
+            args = ["nmap", "-sV", intent.target]
+        elif intent.action == "scan-os":
+            args = ["nmap", "-O", intent.target]
+        elif intent.action == "scan-udp":
+            args = ["nmap", "-sU", intent.target]
+        elif intent.action == "scan-script":
+            args = ["nmap", "-sC", intent.target]
+        else:
+            args = ["nmap", intent.target]
 
-        args = [self.name]
-        if intent.action in self.actions:
-            args.extend(self.actions[intent.action].split())
-        args.append(intent.target)
-
-        return Plan(command=args)
+        return Plan(
+            tool="nmap",
+            action=intent.action,
+            target=intent.target,
+            command=args
+        )
 
     def execute(self, plan: Plan) -> ExecutionResult:
         config = load_config()
