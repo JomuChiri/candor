@@ -88,7 +88,10 @@ def handle(query: str, console_obj=None, current_investigation=None, show_raw=Fa
 
         # Print outputs as they come
         if stdout:
-            console.print(f"[dim]{step.tool.upper()} Output data captured. Use 'Show raw output' to view full text.[/dim]")
+            console.print(
+                f"[dim]{step.tool.upper()} output data captured. "
+                "Use 'Show raw output' to view full text.[/dim]"
+            )
         if stderr:
             console_local.print(f"[red]{stderr}[/red]")
 

@@ -28,9 +28,18 @@ def build_plan(intent: Intent):
         raise ValueError(f"No module found for tool {intent.tool}")
 
     # Delegate to module-specific builder
-    plan = module.build(intent)
+    plan = module.build(intent.action, intent.target)
 
-    # Ensure plan is wrapped in Plan object if module returns dict
+    #Wrap in Plan object if module returns a raw command list
+    if isinstance(plan, list):
+        return Plan(
+            tool=intent.tool,
+            action=intent.action,
+            target=intent.target,
+            command=plan
+        )
+
+    # If module returns dict, normalize
     if isinstance(plan, dict):
         return Plan(
             tool=plan.get("tool", intent.tool),

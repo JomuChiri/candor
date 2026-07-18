@@ -1,52 +1,102 @@
 # candor/modules/registry.py
-import importlib
-import pkgutil
-import candor.modules
-import os
 
-from candor.modules.base import BaseModule
+from candor.modules.gobuster import GobusterModule
 from candor.modules.nmap import NmapModule
+from candor.modules.nikto import NiktoModule
+from candor.modules.ffuf import FfufModule
+from candor.modules.enum4linux import Enum4linuxModule
+from candor.modules.smbclient import SmbclientModule
+from candor.modules.rpcclient import RpcclientModule
+from candor.modules.netexec import NetExecModule
+from candor.modules.bloodhound import BloodhoundModule
+from candor.modules.impacket import ImpacketModule
 from candor.modules.whois import WhoisModule
-# add other modules...
+from candor.modules.dnsrecon import DnsreconModule
+from candor.modules.searchsploit import SearchsploitModule
+from candor.modules.dig import DigModule
+from candor.modules.nuclei import NucleiModule
 
-DEBUG = os.getenv("CANDOR_DEBUG", "0") == "1"
-MODULES = {
-    "nmap": NmapModule,
-    "whois": WhoisModule,
-    # ...
-}
 
-def get(name):
-    return MODULES.get(name)
+class ModuleRegistry:
 
-def list_by_category():
-    categories = {}
-    for module in MODULES.values():
-        meta = module.metadata()
-        categories.setdefault(meta["category"], []).append(meta)
-    return categories
+    def __init__(self):
 
-def discover_modules():
-    package = candor.modules
-    for _, name, ispkg in pkgutil.iter_modules(package.__path__):
-        # Skip non‑tool packages
-        if name in ("base", "registry"):
-            continue
-        try:
-            module = importlib.import_module(f"candor.modules.{name}.module")
-            for attr in dir(module):
-                obj = getattr(module, attr)
-                if isinstance(obj, type) and issubclass(obj, BaseModule) and obj is not BaseModule:
-                    instance = obj()
-                    MODULES[instance.name] = instance
-                    if DEBUG:
-                        print(f"Loaded module: {instance.name}")
-        except Exception as e:
-            if DEBUG:
-                print(f"Failed to load {name}: {e}")
+        self.modules = {
+            "gobuster": GobusterModule,
+            "nmap": NmapModule,
+            "nikto": NiktoModule,
+            "ffuf": FfufModule,
+            "enum4linux": Enum4linuxModule,
+            "smbclient": SmbclientModule,
+            "rpcclient": RpcclientModule,
+            "netexec": NetExecModule,
+            "bloodhound": BloodhoundModule,
+            "impacket": ImpacketModule,
+            "whois": WhoisModule,
+            "dig": DigModule,
+            "searchsploit": SearchsploitModule,
+            "dnsrecon": DnsreconModule,
+            "nuclei": NucleiModule,
+        }
 
-# Run discovery at import time
-discover_modules()
+    #
+    # -------------------------
+    #
 
-def get(name: str):
-    return MODULES.get(name)
+    def get(self, name):
+
+        return self.modules.get(name)
+
+    #
+    # -------------------------
+    #
+
+    def create(self, name):
+
+        module = self.get(name)
+
+        if module is None:
+            raise KeyError(f"Unknown module: {name}")
+
+        return module()
+
+    #
+    # -------------------------
+    #
+
+    def list(self):
+
+        return [
+            module.metadata()
+            for module in self.modules.values()
+        ]
+
+    #
+    # -------------------------
+    #
+
+    def by_category(self):
+
+        categories = {}
+
+        for module in self.modules.values():
+
+            meta = module.metadata()
+
+            categories.setdefault(
+                meta["category"],
+                []
+            ).append(meta)
+
+        return categories
+
+    #
+    # -------------------------
+    #
+
+    def names(self):
+
+        return sorted(self.modules.keys())
+
+
+registry = ModuleRegistry()

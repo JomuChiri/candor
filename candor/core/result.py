@@ -17,3 +17,12 @@ class ExecutionResult:
                 self.status = "success"
         else:
             self.status = "failed"
+
+class Result:
+    def __init__(self, stdout, stderr, status, tool, action, target):
+        self.stdout = stdout
+        self.stderr = stderr
+        self.status = status
+        self.tool = tool
+        self.action = action
+        self.target = target

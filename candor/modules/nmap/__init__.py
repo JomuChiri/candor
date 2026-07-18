@@ -1,17 +1,16 @@
-# candor/modules/nmap/__init__.py
-import subprocess
-
 class NmapModule:
     NAME = "nmap"
-    DESCRIPTION = "Network mapper for port and service discovery"
-    CATEGORY = "Discovery"
+    DESCRIPTION = "Network discovery and port scanning"
+    CATEGORY = "Scanning"
     RISK = "Medium"
     REQUIRES = ["nmap"]
 
+    DEFAULT_ACTION = "scan"
+
     ACTIONS = {
-        "scan-fast": {
-            "description": "Quick scan of common ports",
-            "command": ["nmap", "-F", "{target}"]
+        "scan": {
+            "description": "Basic port scan",
+            "command": ["nmap", "{target}"]
         },
         "scan-service": {
             "description": "Service/version detection",
@@ -20,6 +19,10 @@ class NmapModule:
         "scan-os": {
             "description": "OS detection",
             "command": ["nmap", "-O", "{target}"]
+        },
+        "scan-all": {
+            "description": "Aggressive full scan",
+            "command": ["nmap", "-A", "{target}"]
         }
     }
 
@@ -33,36 +36,29 @@ class NmapModule:
             "category": cls.CATEGORY,
             "risk": cls.RISK,
             "requires": cls.REQUIRES,
+            "default_action": cls.DEFAULT_ACTION,
             "actions": cls.ACTIONS
         }
 
     @classmethod
     def help(cls):
         lines = [f"{cls.NAME} — {cls.DESCRIPTION}"]
+        lines.append(f"Default action: {cls.DEFAULT_ACTION}")
         for action, info in cls.ACTIONS.items():
             lines.append(f"  {action}: {info['description']}")
         return "\n".join(lines)
 
     @classmethod
-    def build(cls, intent):
-        action = intent.action
+    def build(cls, action, target):
+        """Return the command list for the given action and target."""
         if action not in cls.ACTIONS:
-            raise ValueError(f"Unsupported action: {action}")
+            raise ValueError(f"Unknown action '{action}' for {cls.NAME}")
         cmd_template = cls.ACTIONS[action]["command"]
-        cmd = [c.format(target=intent.target) for c in cmd_template]
-        return {
-            "tool": cls.NAME,
-            "action": action,
-            "target": intent.target,
-            "command": cmd
-        }
+        return [arg.replace("{target}", target) for arg in cmd_template]
 
+    # Optional analysis hook
     @classmethod
-    def execute(cls, plan):
-        result = subprocess.run(plan["command"], capture_output=True, text=True)
-        return type("Result", (), {
-            "stdout": result.stdout,
-            "stderr": result.stderr,
-            "status": "success" if result.returncode == 0 else "error"
-        })()
-
+    def analyze(cls, result):
+        if "open" in result.stdout:
+            return "Open ports detected — potential attack surface."
+        return None

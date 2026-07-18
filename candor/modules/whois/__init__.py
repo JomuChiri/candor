@@ -1,53 +1,37 @@
 # candor/modules/whois/__init__.py
+import subprocess
+from candor.modules.base import BaseModule
+from .summary import summarize_whois
 
-class WhoisModule:
-    NAME = "whois"
-    DESCRIPTION = "Domain registration lookup"
-    CATEGORY = "Recon"
-    RISK = "Low"
-    REQUIRES = ["whois"]
 
-    ACTIONS = {
-        "lookup": {
-            "description": "Retrieve domain registration details",
-            "command": "whois {target}"
-        }
-    }
+class WhoisModule(BaseModule):
+    name = "whois"
+    description = "Domain registration lookup"
+    aliases = ["whois"]
+    actions = {"lookup": "Retrieve domain registration details"}
+    supported_targets = ["domain"]
+    summarizer = summarize_whois  # default analyze() will call this
 
-    @classmethod
-    def metadata(cls):
-        return {
-            "name": cls.NAME,
-            "description": cls.DESCRIPTION,
-            "category": cls.CATEGORY,
-            "risk": cls.RISK,
-            "requires": cls.REQUIRES,
-            "actions": cls.ACTIONS
-        }
+    def build(self, intent):
+        """
+        Build the command list for the given intent.
+        """
+        if intent.action not in self.actions:
+            raise ValueError(f"Unsupported action: {intent.action}")
+        return ["whois", intent.target]
 
-    @classmethod
-    def help(cls):
-        lines = [f"{cls.NAME} — {cls.DESCRIPTION}"]
-        for action, info in cls.ACTIONS.items():
-            lines.append(f"  {action}: {info['description']}")
-        return "\n".join(lines)
-
-    @classmethod
-    def build(cls, intent):
-        # Build a plan object or dict for execution
-        return {
-            "tool": cls.NAME,
-            "action": intent.action,
-            "target": intent.target,
-            "command": ["whois", intent.target]
-        }
-
-    @classmethod
-    def execute(cls, plan):
-        import subprocess
-        result = subprocess.run(plan["command"], capture_output=True, text=True)
+    def execute(self, plan):
+        """
+        Execute the plan using subprocess and return a Result object.
+        """
+        result = subprocess.run(plan, capture_output=True, text=True)
         return type("Result", (), {
             "stdout": result.stdout,
             "stderr": result.stderr,
             "status": "success" if result.returncode == 0 else "error"
         })()
+
+    # Optional: override analyze if you want richer AnalysisResult
+    # Otherwise BaseModule.analyze() will call summarize_whois()
+    # def analyze(self, result):
+    #     return super().analyze(result)
