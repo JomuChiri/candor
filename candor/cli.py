@@ -16,7 +16,7 @@ def main():
     """
     Interactive REPL loop for Candor SOC Assistant.
     """
-    console.print("[bold cyan]Candor SOC Assistant v0.6[/]")
+    console.print("[bold cyan]Candor SOC Assistant v0.7[/]")
     console.print("Type 'exit' to quit.\n")
 
     # Initialize investigation state

@@ -37,7 +37,7 @@ def check_tool(tool: str) -> dict:
 def doctor(tool: str = None) -> dict:
     """Check health of all registered modules, or a specific one."""
     results = {}
-    modules = registry.MODULES
+    modules = registry.modules
 
     if tool:
         module = modules.get(tool)

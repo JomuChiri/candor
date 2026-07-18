@@ -9,7 +9,7 @@ def handle(query: str, console):
     _, *args = query.split()
     if not args:
         console.print("[bold magenta]Available modules:[/]")
-        for module in registry.MODULES.values():
+        for module in registry.modules.values():
             console.print(f" - {module.name}")
     else:
         module = registry.get(args[0])

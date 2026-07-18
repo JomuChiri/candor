@@ -4,7 +4,6 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 import subprocess
 
-
 @dataclass
 class ExecutionResult:
     command: list[str]
@@ -17,23 +16,9 @@ class ExecutionResult:
         return self.returncode == 0
 
 
-@dataclass
-class AnalysisResult:
-    summary: str
-    findings: dict
-    recommendations: list[str]
-    risk: str = "Unknown"
-
-
 class BaseModule(ABC):
     """
     Base class for every Candor module.
-
-    Every module only needs to implement:
-
-        build(intent)
-
-    Everything else has sensible defaults.
     """
 
     name = ""
@@ -45,33 +30,17 @@ class BaseModule(ABC):
 
     summarizer = None
 
-    #
-    # ---------- Required ----------
-    #
-
     @abstractmethod
     def build(self, intent):
-        """
-        Return the command to execute.
-
-        Example:
-
-        ["nmap", "-sV", target]
-        """
+        """Return the command to execute."""
         pass
 
-    #
-    # ---------- Default execution ----------
-    #
-
     def execute(self, command):
-
         result = subprocess.run(
             command,
             capture_output=True,
             text=True,
         )
-
         return ExecutionResult(
             command=command,
             stdout=result.stdout,
@@ -79,35 +48,20 @@ class BaseModule(ABC):
             returncode=result.returncode,
         )
 
-    #
-    # ---------- Analysis ----------
-    #
-
     def analyze(self, result: ExecutionResult):
-
         if self.summarizer is None:
-
+            from candor.analysis.analyzer import AnalysisResult
             return AnalysisResult(
                 summary="No summarizer available.",
-                findings={},
+                findings=[],
                 recommendations=[],
+                risk="INFORMATIONAL",
             )
-
-        findings = self.summarizer(result.stdout)
-
-        return AnalysisResult(
-            summary="Analysis complete.",
-            findings=findings,
-            recommendations=[],
-        )
-
-    #
-    # ---------- Metadata ----------
-    #
+        # Summarizer must return an AnalysisResult
+        return type(self).summarizer(result.stdout)
 
     @classmethod
     def metadata(cls):
-
         return {
             "name": cls.name,
             "category": cls.category,
@@ -119,9 +73,7 @@ class BaseModule(ABC):
 
     @classmethod
     def help(cls):
-
         meta = cls.metadata()
-
         lines = [
             f"[bold cyan]{meta['name']}[/]",
             "",
@@ -132,15 +84,9 @@ class BaseModule(ABC):
             "",
             "Actions:",
         ]
-
         for action, desc in cls.actions.items():
             lines.append(f"  {action:<12} {desc}")
-
         if cls.supported_targets:
             lines.append("")
-            lines.append(
-                "Targets : " +
-                ", ".join(cls.supported_targets)
-            )
-
+            lines.append("Targets : " + ", ".join(cls.supported_targets))
         return "\n".join(lines)

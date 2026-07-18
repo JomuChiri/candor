@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from candor.analysis.signatures import (
     SERVICE_SIGNATURES,
@@ -15,9 +15,9 @@ from candor.analysis.signatures import (
 class Recommendation:
     tool: str
     action: str
-    arguments: Dict[str, str]
-    reason: str = ""
-    confidence: float = 1.0
+    arguments: dict
+    reason: str 
+    confidence: float
 
 
 @dataclass(slots=True)
@@ -25,9 +25,9 @@ class Finding:
     signature: str
     service: str
     severity: str
-    description: str | None = None
-    cve: str | None = None
-    recommendations: List[Recommendation] = field(default_factory=list)
+    description: str
+    cve: Optional[str]
+    recommendations: List[Recommendation]
 
 
 @dataclass(slots=True)
@@ -35,7 +35,8 @@ class AnalysisResult:
     summary: str
     findings: List[Finding]
     risk: str
-
+    recommendations: List[Recommendation] = None
+    surfaces: List[str] = None
 
 # ----------------------------------------------------------------------
 # Internal helpers
